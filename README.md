@@ -1,133 +1,73 @@
-# 📄 Documentation for ci.yaml
-````
-# Continuous Integration Workflow (`ci.yaml`)
+# 📄 Project-structure.md
 
-This workflow automates the build and push process for all services in the project.  
-It runs on every push to the `main` branch and ensures that Docker images are always up to date in Docker Hub.
+````
+# Project Structure & Summary
+
+This project is a **3‑tier application** built with Docker Compose, integrating:
+- **Frontend (React)** → User interface
+- **Backend (FastAPI)** → API service
+- **Database (PostgreSQL)** → Persistent storage
+- **Cache (Redis)** → In‑memory caching
+- **Reverse Proxy (Nginx)** → Entry point and traffic routing
 
 ---
 
-## Workflow Breakdown
+## 📂 File Structure
 
-### Workflow Name
-```yaml
-name: CI
+.
+├── backend/              # FastAPI backend service (main.py, Dockerfile)
+├── frontend/             # React frontend (UI, Dockerfile)
+├── init/postgres/        # Database schema + seed data
+├── nginx-reverseproxy/   # Nginx reverse proxy configuration + Dockerfile
+├── docker-compose.yml    # Orchestration of all services
+├── Makefile              # Shortcuts for common commands
+├── .github/workflows/    # CI/CD pipelines (ci.yaml, cd.yaml)
+├── .env.example          # Reference environment variables (Secrets vs Variables)
+└── README.md             # Project documentation
+
+Code
+
+---
+
+## 🔎 Request Flow
+
+### 1. User hits `http://localhost`
+- Request goes to **Nginx reverse proxy**.  
+- Nginx forwards traffic to the **Frontend container**.  
+- The frontend displays a simple webpage with a form:
+  - **Add User** → fields for `name` and `number`.  
+  - **Submit button** → sends data to the backend API.  
+- On successful submission, the page shows:  
+✅ User saved successfully with ID <number>
+
+
+### 2. User hits `http://localhost/api`
+- Request goes to **Nginx reverse proxy**.  
+- Nginx forwards traffic to the **Backend container** (FastAPI).  
+- Backend responds with:
+```json
+{"message": "Hello World"}
+This confirms the backend server is running and reachable.
+
+✅ Summary
+Frontend (localhost) → Displays a form to add user data (name + number).
+
+Backend (localhost/api) → Returns a simple JSON response (Hello World) to confirm API health.
+
+Nginx Reverse Proxy → Routes requests to the correct service (Frontend or Backend).
+
+Postgres + Redis → Support data persistence and caching for backend operations.
+
+Docker Compose → Orchestrates all services into one stack.
+
+This design demonstrates a complete 3‑tier architecture with clear separation of concerns:
+
+UI Layer → React frontend
+
+Logic Layer → FastAPI backend
+
+Data Layer → PostgreSQL + Redis
+
+Entry Point → Nginx reverse proxy
 ````
-
-* The workflow is named **CI** to clearly indicate its purpose: Continuous Integration.
-
-#### Trigger
-
-yaml
-
-```
-on:
-  push:
-    branches: [main]
-```
-
-* The workflow runs automatically whenever code is pushed to the `main` branch.
-* This ensures production images are always built from the latest stable code.
-
-#### Job: Build and Push
-
-yaml
-
-```
-jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-```
-
-* Defines a job called **build-and-push**.
-* Runs on GitHub’s `ubuntu-latest` runner environment.
-
-#### Matrix Strategy
-
-yaml
-
-```
-    strategy:
-      matrix:
-        env_folder: [backend, frontend, nginx-reverseproxy]
-```
-
-* Uses a **matrix build** to run the same steps for three different services:
-  * `backend`
-  * `frontend`
-  * `nginx-reverseproxy`
-* This allows parallel builds, saving time and ensuring consistency across services.
-
-#### Steps
-
-**1. Checkout Code**
-
-yaml
-
-```
-      - name: Checkout Code
-        uses: actions/checkout@v7
-```
-
-* Pulls the latest code from the repository into the runner environment.
-
-**2. Docker Login**
-
-yaml
-
-```
-      - name: Docker Setup [Login]
-        uses: docker/login-action@v4
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-```
-
-* Logs into Docker Hub using GitHub Secrets for secure authentication.
-* Credentials are never exposed in plain text.
-
-**3. Docker Build and Push**
-
-yaml
-
-```
-      - name: Docker Build and Push
-        uses: docker/build-push-action@v7
-        with:
-          context: ./${{ matrix.env_folder }}
-          push: true
-          tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/project-${{ matrix.env_folder }}:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/project-${{ matrix.env_folder }}:${{ github.sha }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/project-${{ matrix.env_folder }}:${{ github.ref_name }}
-```
-
-* Builds Docker images for each service from its respective folder.
-* Pushes the images to Docker Hub with three tags:
-  * `latest` → always points to the newest build.
-  * `commit SHA` → uniquely identifies the exact commit.
-  * `branch name` → useful for testing feature branches.
-
-#### Job: Deploy
-
-yaml
-
-```
-  deploy:
-    needs: build-and-push
-    uses: ./.github/workflows/cd.yaml
-    secrets: inherit
-```
-
-* Defines a **deploy** job that runs after `build-and-push` completes.
-* Reuses the `cd.yaml` workflow for deployment.
-* Inherits secrets so deployment can authenticate with Docker Hub and other services.
-
-### ✅ Summary
-
-This CI workflow ensures:
-
-* Every push to `main` automatically builds and pushes fresh Docker images.
-* Images are tagged for traceability (`latest`, commit SHA, branch).
-* Deployment is triggered seamlessly after builds succeed.
-* The process is secure, automated, and consistent across all services.
+Rest all other details related to this project are located in docs folder on root location of this project.
