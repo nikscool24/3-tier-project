@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        env_folder: [backend, frontend]
+        env_folder: [backend, frontend, nginx-reverseproxy]
 
     steps:
       - name: Checkout Code
@@ -39,4 +39,9 @@ jobs:
         with:
           context: ./${{ matrix.env_folder }}
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/project-${{ matrix.env_folder }}:latest   
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/project-${{ matrix.env_folder }}:latest 
+
+  # deploy:
+  #       needs: build-and-push
+  #       uses: ./.github/workflows/cd.yml
+  #       secrets: inherit        
