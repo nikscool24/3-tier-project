@@ -35,5 +35,5 @@ jobs:
 
   deploy:
         needs: build-and-push
-        uses: ./.github/workflows/cd.yml
+        uses: ./.github/workflows/cd.yaml
         secrets: inherit        
