@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.14]
         env_folder: [backend, frontend, nginx-reverseproxy]
 
     steps:
