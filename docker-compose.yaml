@@ -74,6 +74,8 @@ services:
     ports:
       - "${NGINX_HOST_PORT}:${NGINX_CONTAINER_PORT}"
     restart: always
+    volumes:
+    - ./certs:/etc/nginx/certs:ro
     networks:
       - project-network
     healthcheck:
