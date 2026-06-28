@@ -17,24 +17,10 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }} 
- 
-      - name: Ensure deployment folder permissions
-        run: |
-          DEPLOY_DIR=$HOME/app
-          mkdir -p $DEPLOY_DIR
-          # Give ownership to the runner user
-          sudo chown -R $USER:$USER $DEPLOY_DIR
-          # Allow read/write/execute for owner, read/execute for group/others
-          chmod -R 755 $DEPLOY_DIR
 
-      - name: Sync project to deployment folder
-        run: |
-          DEPLOY_DIR=$HOME/app
-          rsync -av --delete . $DEPLOY_DIR    
 
       - name: Write .env file
         run: |
-          DEPLOY_DIR=$HOME/app
           cat <<EOF > .env
           POSTGRES_CONTAINER_NAME=${{ vars.POSTGRES_CONTAINER_NAME }}
           POSTGRES_IMAGE=${{ vars.POSTGRES_IMAGE }}
@@ -72,6 +58,5 @@ jobs:
         
       - name: Run the Deployment of containers with Docker Compose
         run: |
-          cd $HOME/app
           docker compose --env-file .env pull
           docker compose --env-file .env up -d --force-recreate --pull always
