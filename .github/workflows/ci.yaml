@@ -23,7 +23,7 @@ jobs:
                 dockerfile: ./${{ matrix.folders}}/Dockerfile
 
             - name: Docker Build ${{ matrix.folders }}
-              run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/project-${{ matrix.folders }}:latest --no-cache
+              run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/project-${{ matrix.folders }}:latest --no-cache .
               working-directory: ./${{ matrix.folders }} 
               
             - name: Run Trivy vulnerability scanner
