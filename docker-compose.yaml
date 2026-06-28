@@ -46,7 +46,7 @@ services:
       - project-network  
     environment:
       PORT: "${BACKEND_CONTAINER_PORT}"
-      POSTGRES_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER_NAME}:${POSTGRES_CONTAINER_PORT}/${POSTGRES_DB}"
+      DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER_NAME}:${POSTGRES_CONTAINER_PORT}/${POSTGRES_DB}"
       REDIS_URL: "redis://${REDIS_CONTAINER_NAME}:6379"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:${BACKEND_CONTAINER_PORT}/health || exit 1"]

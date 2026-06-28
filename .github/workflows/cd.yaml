@@ -28,7 +28,7 @@ jobs:
           POSTGRES_USER=${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-          #   POSTGRES_URL=${{ secrets.POSTGRES_URL }}
+          #   DATABASE_URL=${{ secrets.DATABASE_URL }}
 
           REDIS_CONTAINER_NAME=${{ vars.REDIS_CONTAINER_NAME }}
           REDIS_IMAGE=${{ vars.REDIS_IMAGE }}
