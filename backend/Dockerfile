@@ -6,7 +6,7 @@ COPY requirements.txt .
 
 # we can also use COPY . . (It means entire folder to be copy from local to container image)
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt --no-cache-dir
 
 COPY main.py .
 
