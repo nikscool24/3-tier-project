@@ -7,39 +7,6 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
-    env:
-      POSTGRES_CONTAINER_NAME: ${{ vars.POSTGRES_CONTAINER_NAME }}
-      POSTGRES_IMAGE: ${{ vars.POSTGRES_IMAGE }}
-      POSTGRES_HOST_PORT: ${{ secrets.POSTGRES_HOST_PORT }}
-      POSTGRES_CONTAINER_PORT: ${{ vars.POSTGRES_CONTAINER_PORT }}
-      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-    #   POSTGRES_URL: ${{ secrets.POSTGRES_URL }}
-
-      REDIS_CONTAINER_NAME: ${{ vars.REDIS_CONTAINER_NAME }}
-      REDIS_IMAGE: ${{ vars.REDIS_IMAGE }}
-      REDIS_HOST_PORT: ${{ vars.REDIS_HOST_PORT }}
-      REDIS_CONTAINER_PORT: ${{ vars.REDIS_CONTAINER_PORT }}
-    #   REDIS_URL: ${{ secrets.REDIS_URL }}
-
-      BACKEND_CONTAINER_NAME: ${{ vars.BACKEND_CONTAINER_NAME }}
-      BACKEND_HOST_PORT: ${{ secrets.BACKEND_HOST_PORT }}
-      BACKEND_CONTAINER_PORT: ${{ vars.BACKEND_CONTAINER_PORT }}
-      BACKEND_IMAGE: ${{ secrets.BACKEND_IMAGE }}
-      
-
-      FRONTEND_CONTAINER_NAME: ${{ vars.FRONTEND_CONTAINER_NAME }}
-      FRONTEND_IMAGE: ${{ secrets.FRONTEND_IMAGE }}
-      FRONTEND_HOST_PORT: ${{ vars.FRONTEND_HOST_PORT }}
-      FRONTEND_CONTAINER_PORT: ${{ vars.FRONTEND_CONTAINER_PORT }}
-
-      NGINX_CONTAINER_NAME: ${{ vars.NGINX_CONTAINER_NAME }}
-      NGINX_IMAGE: ${{ secrets.NGINX_IMAGE }}
-      NGINX_HOST_PORT: ${{ vars.NGINX_HOST_PORT }}
-      NGINX_CONTAINER_PORT: ${{ vars.NGINX_CONTAINER_PORT }}
-
-      NETWORK_NAME: ${{ vars.NETWORK_NAME }}
 
     steps:
       - name: Checkout Code
@@ -49,11 +16,46 @@ jobs:
         uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}  
+          password: ${{ secrets.DOCKERHUB_TOKEN }} 
+
+      - name: Write .env file
+        run: |
+          cat <<EOF > .env
+          POSTGRES_CONTAINER_NAME=${{ vars.POSTGRES_CONTAINER_NAME }}
+          POSTGRES_IMAGE=${{ vars.POSTGRES_IMAGE }}
+          POSTGRES_HOST_PORT=${{ secrets.POSTGRES_HOST_PORT }}
+          POSTGRES_CONTAINER_PORT=${{ vars.POSTGRES_CONTAINER_PORT }}
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          #   POSTGRES_URL=${{ secrets.POSTGRES_URL }}
+
+          REDIS_CONTAINER_NAME=${{ vars.REDIS_CONTAINER_NAME }}
+          REDIS_IMAGE=${{ vars.REDIS_IMAGE }}
+          REDIS_HOST_PORT=${{ vars.REDIS_HOST_PORT }}
+          REDIS_CONTAINER_PORT=${{ vars.REDIS_CONTAINER_PORT }}
+          #   REDIS_URL=${{ secrets.REDIS_URL }}
+
+          BACKEND_CONTAINER_NAME=${{ vars.BACKEND_CONTAINER_NAME }}
+          BACKEND_HOST_PORT=${{ secrets.BACKEND_HOST_PORT }}
+          BACKEND_CONTAINER_PORT=${{ vars.BACKEND_CONTAINER_PORT }}
+          BACKEND_IMAGE=${{ secrets.BACKEND_IMAGE }}
+      
+
+          FRONTEND_CONTAINER_NAME=${{ vars.FRONTEND_CONTAINER_NAME }}
+          FRONTEND_IMAGE=${{ secrets.FRONTEND_IMAGE }}
+          FRONTEND_HOST_PORT=${{ vars.FRONTEND_HOST_PORT }}
+          FRONTEND_CONTAINER_PORT=${{ vars.FRONTEND_CONTAINER_PORT }}
+
+          NGINX_CONTAINER_NAME=${{ vars.NGINX_CONTAINER_NAME }}
+          NGINX_IMAGE=${{ secrets.NGINX_IMAGE }}
+          NGINX_HOST_PORT=${{ vars.NGINX_HOST_PORT }}
+          NGINX_CONTAINER_PORT=${{ vars.NGINX_CONTAINER_PORT }}
+
+          NETWORK_NAME=${{ vars.NETWORK_NAME }}
+          EOF    
         
       - name: Run the Deployment of containers with Docker Compose
         run: |
-          docker compose pull
-          docker compose up -d --force-recreate --pull always
-        
-          
+          docker compose --env-file .env pull
+          docker compose --env-file .env up -d --force-recreate --pull always
