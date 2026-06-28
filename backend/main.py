@@ -23,14 +23,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # Simple user model
 class User(BaseModel):
     name: str
     phone: str
 
+
 @app.get("/")
 def home():
     return {"message": "Hello World"}
+
 
 @app.post("/adduser")
 def add_user(user: User):
@@ -44,6 +47,7 @@ def add_user(user: User):
 
     # Cache the new user in Redis
     r.set(f"user:{user_id}", f"{user.name}|{user.phone}")
+
 
     return {"id": user_id, "name": user.name, "phone": user.phone}
 
@@ -68,6 +72,7 @@ def get_user(user_id: int):
         return {"id": user_id, "name": result[0], "phone": result[1]}
     else:
         return {"error": "User not found"}
+
 
 # Keeps FastAPI running
 if __name__ == "__main__":
