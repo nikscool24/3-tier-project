@@ -19,7 +19,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - ${NETWORK_NAME}   
+      - project-network  
   redis:
     container_name: ${REDIS_CONTAINER_NAME}
     image: ${REDIS_IMAGE}
@@ -27,7 +27,7 @@ services:
     ports:
       - "${REDIS_HOST_PORT}:${REDIS_CONTAINER_PORT}"
     networks:
-      - ${NETWORK_NAME}
+      - project-network
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -43,7 +43,7 @@ services:
     ports:
       - "${BACKEND_HOST_PORT}:${BACKEND_CONTAINER_PORT}"
     networks:
-      - ${NETWORK_NAME}   
+      - project-network  
     environment:
       PORT: "${BACKEND_CONTAINER_PORT}"
       POSTGRES_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER_NAME}:${POSTGRES_CONTAINER_PORT}/${POSTGRES_DB}"
@@ -63,7 +63,7 @@ services:
     ports:
       - "${FRONTEND_HOST_PORT}:${FRONTEND_CONTAINER_PORT}" 
     networks:
-      - ${NETWORK_NAME}
+      - project-network
 
   reverseproxy:
     container_name: ${NGINX_CONTAINER_NAME}
@@ -75,7 +75,7 @@ services:
       - "${NGINX_HOST_PORT}:${NGINX_CONTAINER_PORT}"
     restart: always
     networks:
-      - ${NETWORK_NAME}
+      - project-network
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:${NGINX_CONTAINER_PORT} || exit 1"]
       interval: 10s
@@ -88,5 +88,5 @@ volumes:
   postgres-data:
 
 networks:
-  ${NETWORK_NAME}:
+  project-network:
     driver: bridge
