@@ -48,7 +48,6 @@ def add_user(user: User):
     # Cache the new user in Redis
     r.set(f"user:{user_id}", f"{user.name}|{user.phone}")
 
-
     return {"id": user_id, "name": user.name, "phone": user.phone}
 
 @app.get("/getuser/{user_id}")
