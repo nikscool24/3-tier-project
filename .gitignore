@@ -1,1 +1,6 @@
+# env — keep .env local; the committed template is .env.example
 .env
+
+# misc
+.DS_Store
+*.local

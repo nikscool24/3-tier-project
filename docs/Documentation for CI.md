@@ -1,6 +1,4 @@
 # 📄 Documentation for ci.yaml
-
-{% code lineNumbers="true" %}
 ````
 # Continuous Integration Workflow (`ci.yaml`)
 
@@ -15,7 +13,6 @@ It runs on every push to the `main` branch and ensures that Docker images are al
 ```yaml
 name: CI
 ````
-{% endcode %}
 
 * The workflow is named **CI** to clearly indicate its purpose: Continuous Integration.
 
