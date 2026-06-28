@@ -1,4 +1,4 @@
-# 📄 Documentation for docker-compose.yaml
+## Documentation for docker-compose.yaml
 
 ````
 # Docker Compose Setup
@@ -73,7 +73,7 @@ networks:
 * All services share a custom bridge network (`project-network`).
 * Enables secure inter‑service communication without exposing internal ports externally.
 
-### ✅ Summary
+
 
 This Docker Compose setup:
 

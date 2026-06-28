@@ -43,7 +43,7 @@ continue-on-error: true → logs results but allows pipeline to continue for vis
 
 Output format: table for easy readability in GitHub Actions logs.
 
-✅ Summary
+
 Hadolint → enforces Dockerfile best practices.
 
 Docker Build with --no-cache → ensures fresh images are scanned.

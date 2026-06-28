@@ -1,4 +1,4 @@
-# 📄 Project Introduction
+## Project Introduction
 
 ```
 # Project Introduction

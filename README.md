@@ -1,4 +1,4 @@
-# 📄 Project-structure.md
+## Project-structure.md
 
 ````
 # Project Structure & Summary
@@ -29,7 +29,7 @@ Code
 
 ---
 
-## 🔎 Request Flow
+## Request Flow
 
 ### 1. User hits `http://localhost`
 - Request goes to **Nginx reverse proxy**.  
@@ -38,7 +38,7 @@ Code
   - **Add User** → fields for `name` and `number`.  
   - **Submit button** → sends data to the backend API.  
 - On successful submission, the page shows:  
-✅ User saved successfully with ID <number>
+ User saved successfully with ID <number>
 
 
 ### 2. User hits `http://localhost/api`
@@ -49,7 +49,7 @@ Code
 {"message": "Hello World"}
 This confirms the backend server is running and reachable.
 
-✅ Summary
+Summary
 Frontend (localhost) → Displays a form to add user data (name + number).
 
 Backend (localhost/api) → Returns a simple JSON response (Hello World) to confirm API health.

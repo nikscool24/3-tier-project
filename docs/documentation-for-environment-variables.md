@@ -1,4 +1,4 @@
-# 📄 Documentation for Environment Variables
+## Documentation for Environment Variables
 
 ```
 # Environment Variables
@@ -59,7 +59,7 @@ The file is generated dynamically during deployment, pulling values from **GitHu
 
 ---
 
-## ✅ Summary
+
 By separating secrets and configs:
 - The pipeline stays secure (no hardcoded passwords).  
 - Deployment is consistent across environments.

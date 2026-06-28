@@ -1,4 +1,4 @@
-# 📄 Documentation for cd.yaml
+## Documentation for cd.yaml
 
 ````
 # Continuous Deployment Workflow (`cd.yaml`)
@@ -97,8 +97,6 @@ yaml
 
 **4. Run Deployment with Docker Compose**
 
-yaml
-
 ```
       - name: Run the Deployment of containers with Docker Compose
         run: |
@@ -113,7 +111,7 @@ yaml
 * The `--force-recreate` flag ensures old containers are replaced cleanly.
 * The `--pull always` flag guarantees the newest image version is used.
 
-### ✅ Summary
+
 
 This CD workflow ensures:
 
