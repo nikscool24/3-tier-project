@@ -10,28 +10,32 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        python-version: [3.14]
         env_folder: [backend, frontend, nginx-reverseproxy]
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v7
 
-      # - name: Python-Setup
-      #   uses: actions/setup-python@v6
-      #   with:
-      #     python-version: '3.14'
-      #     cache: 'pip' # caching pip dependencies
+      - name: Python-Setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip' # caching pip dependencies
 
-      # - name:
-      #   working-directory: ./backend 
-      #   run: pip install -r requirements.txt 
+      - name: Installing Requirements
+        working-directory: ./backend 
+        run: pip install -r requirements.txt 
 
+      - name: scan code for syntax
+        working-directory: ./backend
+        run: flake8 .  
 
 
       - name: Docker Setup [Login]
         uses: docker/login-action@v4
         with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Docker Build and Push
@@ -39,7 +43,10 @@ jobs:
         with:
           context: ./${{ matrix.env_folder }}
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/project-${{ matrix.env_folder }}:latest 
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/project-${{ matrix.env_folder }}:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/project-${{ matrix.env_folder }}:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/project-${{ matrix.env_folder }}:${{ github.ref_name }}
 
   # deploy:
   #       needs: build-and-push
