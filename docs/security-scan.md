@@ -5,30 +5,33 @@ This project integrates **security scanning** directly into the CI workflow to e
 ---
 
 ## Why Security Scanning?
-- Detect vulnerabilities in base images and dependencies.
-- Enforce best practices in Dockerfiles.
-- Prevent insecure images from being pushed to DockerHub.
-- Maintain production-grade security standards.
+- Detect vulnerabilities in base images and dependencies.  
+- Enforce best practices in Dockerfiles.  
+- Prevent insecure images from being pushed to DockerHub.  
+- Maintain production‑grade security standards.
 
 ---
 
 ## Workflow Breakdown
 
 ### 1. Dockerfile Lint (Hadolint)
-- Each service (`backend`, `frontend`, `nginx-reverseproxy`) runs through **Hadolint**.
+- Each service (`backend`, `frontend`, `nginx-reverseproxy`) runs through **Hadolint**.  
 - Hadolint checks for:
-  - Best practices (e.g., using `COPY` instead of `ADD`).
-  - Avoiding root user in containers.
-  - Proper use of pinned versions.
+  - Best practices (e.g., using `COPY` instead of `ADD`).  
+  - Avoiding root user in containers.  
+  - Proper use of pinned versions.  
 - Ensures Dockerfiles are clean, consistent, and secure.
+
+---
 
 ### 2. Docker Build (with `--no-cache`)
 - Builds a Docker image for each service with:
   ```bash
   docker build -t <username>/project-<service>:latest --no-cache
 
+The --no-cache flag forces a fresh build, ensuring scanners check the latest layers instead of cached ones.
 
-##### Vulnerability Scan (Trivy)
+## 3.Vulnerability Scan (Trivy)
 Runs Trivy against each built image.
 
 Configuration:
@@ -43,7 +46,7 @@ continue-on-error: true → logs results but allows pipeline to continue for vis
 
 Output format: table for easy readability in GitHub Actions logs.
 
-
+## Summary
 Hadolint → enforces Dockerfile best practices.
 
 Docker Build with --no-cache → ensures fresh images are scanned.

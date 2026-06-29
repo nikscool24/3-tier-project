@@ -6,10 +6,10 @@ This project uses **Let's Encrypt** (free, automated SSL certificates) with **Ce
 ---
 
 ## Prerequisites
-- A registered domain (e.g., `example.com`).
-- DNS records pointing the domain to your server’s public IP.
-- Nginx reverse proxy running in Docker (from `nginx-reverseproxy/`).
-- Port `80` (HTTP) and `443` (HTTPS) open on the server.
+- A registered domain (e.g., `example.com`).  
+- DNS records pointing the domain to your server’s public IP.  
+- Nginx reverse proxy running in Docker (from `nginx-reverseproxy/`).  
+- Port `80` (HTTP) and `443` (HTTPS) open on the server.  
 
 ---
 
@@ -20,10 +20,10 @@ On the server:
 ```bash
 sudo apt update
 sudo apt install certbot python3-certbot-nginx -y
-2. Configure Nginx for Domain
-Update nginx.conf:
 
-nginx
+## 2. Configure Nginx for Domain
+## Update nginx.conf:
+
 server {
     listen 80;
     server_name example.com www.example.com;
@@ -36,13 +36,11 @@ server {
         proxy_pass http://backend:8000;
     }
 }
+## 3. Obtain SSL Certificate
+## Run Certbot:
 
-
-3. Obtain SSL Certificate
-Run Certbot:
-
-bash
 sudo certbot --nginx -d example.com -d www.example.com
+
 Certbot will:
 
 Verify domain ownership via HTTP challenge.
@@ -51,23 +49,18 @@ Automatically configure Nginx with SSL.
 
 Generate certificates in /etc/letsencrypt/live/example.com/.
 
-4. Auto‑Renew Certificates
+## 4. Auto‑Renew Certificates
 Let’s Encrypt certificates expire every 90 days.
 Set up auto‑renewal:
 
-bash
 sudo crontab -e
-Add:
 
-bash
+Add:
 0 0 * * * certbot renew --quiet
 
+## Docker Integration
+If using Docker Compose, mount certificates into the Nginx container:
 
-Docker Integration
-If using Docker Compose:
-Mount certificates into the Nginx container:
-
-yaml
 reverseproxy:
   container_name: ${NGINX_CONTAINER_NAME}
   image: ${NGINX_IMAGE}
@@ -79,12 +72,11 @@ reverseproxy:
   networks:
     - project-network
 
-
-
+## Summary
 Self‑signed SSL → for local testing (shows “Not Secure”).
 
 Let’s Encrypt SSL → for production with a domain (trusted by browsers).
 
 Certificates are free, auto‑renewed, and fully integrated with Nginx.
 
-Users accessing https://example.com will see a secure green lock
+Users accessing https://example.com will see a secure green lock 🔒.

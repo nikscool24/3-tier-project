@@ -1,37 +1,51 @@
 # Logging Strategy
 
-This project uses a **container‑based logging approach** where all services output logs to `stdout`/`stderr`.  
-Docker captures these logs automatically, making them accessible via `docker logs`.
+This project uses a **container‑based logging approach** where all services write logs to `stdout` and `stderr`.  
+Docker automatically captures these logs, which makes them easy to view with `docker logs` or `docker compose logs`.
 
 ---
 
 ## Current Setup
-- **Backend (FastAPI)** → Python logging configured to `stdout`.
-- **Postgres, Redis, Nginx** → default logging to `stdout`.
-- **Docker Compose** → aggregates logs from all containers.
+- **Backend (FastAPI)** → Python logging configured to output to `stdout`.  
+- **Postgres, Redis, Nginx** → default logging to `stdout`.  
+- **Docker Compose** → aggregates logs from all containers so you can view them together.
 
 ---
 
 ## Viewing Logs
 - Backend logs:
   ```bash
-  docker logs <conatiner_id>
+  docker logs <container_id>
   docker compose logs -f backend
 
-  docker compose logs -f reverseproxy
+## Nginx logs:
+docker compose logs -f reverseproxy
 
-  docker compose logs -f postgres
 
-#######################################################################
-Rotation & Retention
-Docker’s default json-file driver stores logs.
+## Postgres logs:
+docker compose logs -f postgres
 
-Configure log rotation in docker-compose.yml:
+## Rotation & Retention
+By default, Docker uses the json-file logging driver.
+To prevent logs from growing too large and filling up disk space, configure log rotation in docker-compose.yml:
 
-yaml
 logging:
   driver: "json-file"
   options:
     max-size: "10m"
     max-file: "3"
-Prevents disk exhaustion by limiting log size.
+
+max-size: "10m" → each log file is capped at 10 MB.
+
+max-file: "3" → keeps up to 3 rotated log files.
+
+This setup prevents disk exhaustion while still keeping recent logs available
+
+## Summary
+All services log to stdout/stderr.
+
+Logs can be viewed with docker logs or docker compose logs.
+
+Rotation is configured to avoid disk issues.
+
+Future improvements could include centralized logging (ELK, Loki, or CloudWatch).

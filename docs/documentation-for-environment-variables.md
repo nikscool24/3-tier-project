@@ -1,10 +1,7 @@
-## Documentation for Environment Variables
-
-```
 # Environment Variables
 
 This project uses a `.env` file to manage configuration for all services.  
-The file is generated dynamically during deployment, pulling values from **GitHub Secrets** (sensitive data) and **GitHub Variables** (non-sensitive configs).
+The file is generated dynamically during deployment, pulling values from **GitHub Secrets** (sensitive data) and **GitHub Variables** (non‑sensitive configs).
 
 ---
 
@@ -54,13 +51,13 @@ The file is generated dynamically during deployment, pulling values from **GitHu
 
 ## Storage Locations
 - **GitHub Secrets** → Used for sensitive values (passwords, usernames, private images).  
-- **GitHub Variables** → Used for non-sensitive configs (container names, ports, image names).  
+- **GitHub Variables** → Used for non‑sensitive configs (container names, ports, image names).  
 - **.env file** → Generated at runtime on the server, never committed to source control.
 
 ---
 
-
+## Summary
 By separating secrets and configs:
 - The pipeline stays secure (no hardcoded passwords).  
-- Deployment is consistent across environments.
-```
+- Deployment is consistent across environments.  
+- The `.env` file is always generated fresh during deployment, keeping the setup clean and safe.
