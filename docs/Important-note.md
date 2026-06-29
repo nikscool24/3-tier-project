@@ -24,6 +24,15 @@ Before running this project in a real environment, there are a few things that *
 
 ---
 
+## Minimum Server Requirements
+To run Docker and the self‑hosted runner reliably, your server should have at least:
+- **4 GB RAM**
+- **2 vCPUs**
+
+Anything below this may cause crashes or unstable performance during deployments.
+
+---
+
 ## Recommended Approach
 
 - **Step 1:** Install Docker and Docker Compose following the [install-docker.md](./install-docker.md) guide.  
@@ -33,9 +42,10 @@ Before running this project in a real environment, there are a few things that *
 
 ---
 
-## Summary
+## ✅ Summary
 
 - Docker and Docker Compose are required to run the application stack.  
 - The self‑hosted runner is required to execute CI/CD workflows on your server.  
 - All three must be installed manually to ensure stability, security, and proper integration with your environment.  
+- Minimum server specs: **4 GB RAM, 2 vCPUs**.  
 - Once installed, the project can be deployed smoothly using `docker-compose up` and GitHub Actions.
