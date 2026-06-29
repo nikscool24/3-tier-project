@@ -1,14 +1,11 @@
-## Project-structure.md
-
-````
-# Project Structure & Summary
+## Project Structure & Summary
 
 This project is a **3‑tier application** built with Docker Compose, integrating:
-- **Frontend (React)** → User interface
-- **Backend (FastAPI)** → API service
-- **Database (PostgreSQL)** → Persistent storage
-- **Cache (Redis)** → In‑memory caching
-- **Reverse Proxy (Nginx)** → Entry point and traffic routing
+- **Frontend (React)** → User interface  
+- **Backend (FastAPI)** → API service  
+- **Database (PostgreSQL)** → Persistent storage  
+- **Cache (Redis)** → In‑memory caching  
+- **Reverse Proxy (Nginx)** → Entry point and traffic routing  
 
 ---
 
@@ -25,11 +22,10 @@ This project is a **3‑tier application** built with Docker Compose, integratin
 ├── .env.example          # Reference environment variables (Secrets vs Variables)
 └── README.md             # Project documentation
 
-Code
 
 ---
 
-## Request Flow
+## 🔎 Request Flow
 
 ### 1. User hits `http://localhost`
 - Request goes to **Nginx reverse proxy**.  
@@ -38,8 +34,9 @@ Code
   - **Add User** → fields for `name` and `number`.  
   - **Submit button** → sends data to the backend API.  
 - On successful submission, the page shows:  
- User saved successfully with ID <number>
 
+
+## User saved successfully with ID <number>
 
 ### 2. User hits `http://localhost/api`
 - Request goes to **Nginx reverse proxy**.  
@@ -47,9 +44,11 @@ Code
 - Backend responds with:
 ```json
 {"message": "Hello World"}
-This confirms the backend server is running and reachable.
 
-Summary
+## This confirms the backend server is running and reachable.
+
+
+## Summary
 Frontend (localhost) → Displays a form to add user data (name + number).
 
 Backend (localhost/api) → Returns a simple JSON response (Hello World) to confirm API health.
@@ -69,5 +68,3 @@ Logic Layer → FastAPI backend
 Data Layer → PostgreSQL + Redis
 
 Entry Point → Nginx reverse proxy
-````
-Rest all other details related to this project are located in docs folder on root location of this project.
